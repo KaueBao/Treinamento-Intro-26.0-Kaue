@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createMateria, getAllMaterias } from '@/app/(backend)/services/materias'
 import { createMateriaSchema } from '@/backend/schemas';
-import { blockForbiddenRequests, returnInvalidDataErrors, validBody, zodErrorHandler } from '@/utils';
+import { blockForbiddenRequests, returnInvalidDataErrors, validBody, zodErrorHandler } from '@/utils/api';
 import type { AllowedRoutes } from '@/types';
 import { toErrorMessage } from '@/utils/api/toErrorMessage';
 

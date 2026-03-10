@@ -1,0 +1,148 @@
+.page {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.navbar {
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  width: 60px;
+  height: auto;
+}
+
+.userBox {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-weight: 600;
+}
+
+.cartWrapper {
+  position: relative;
+}
+
+.cartButton {
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.cartPopup {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 260px;
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+  padding: 12px;
+  z-index: 20;
+}
+
+.cartList {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cartItem {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
+}
+
+.emptyCart {
+  margin-top: 8px;
+}
+
+.main {
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.vitrine {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background-color: #fff;
+  border: 2px solid #000;
+  padding: 15px;
+  width: 250px;
+  text-align: center;
+}
+
+.cardImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.cardDesc {
+  min-height: 40px;
+}
+
+.price {
+  font-weight: 700;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.button {
+  padding: 10px;
+  margin-top: 5px;
+  cursor: pointer;
+  background-color: #ddd;
+  border: 1px solid #000;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    justify-content: center;
+  }
+
+  .userBox {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cartPopup {
+    right: 50%;
+    transform: translateX(50%);
+    width: 220px;
+  }
+}

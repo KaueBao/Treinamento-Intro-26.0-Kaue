@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getMateriaBySlug } from '@/app/(backend)/services/materias'
 import { slugSchema } from '@/backend/schemas'
-import { returnInvalidDataErrors, zodErrorHandler } from '@/utils'
+import { returnInvalidDataErrors, zodErrorHandler } from '@/utils/api'
 import { toErrorMessage } from '@/utils/api/toErrorMessage'
 
 export async function GET(

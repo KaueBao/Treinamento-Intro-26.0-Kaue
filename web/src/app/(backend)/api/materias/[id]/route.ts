@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getMateriaById } from '@/app/(backend)/services/materias'
 import { idSchema } from '@/backend/schemas';
-import { zodErrorHandler } from '@/utils';
+import { zodErrorHandler } from '@/utils/api';
 import { toErrorMessage } from '@/utils/api/toErrorMessage';
 
 export async function GET(
