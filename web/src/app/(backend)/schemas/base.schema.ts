@@ -2,6 +2,10 @@ import { z } from "zod";
 
 export const idSchema = z.string().uuid('ID inválido');
 
+export const objectIdSchema = z
+  .string()
+  .regex(/^[a-fA-F0-9]{24}$/, "ID invalido");
+
 export const passwordSchema = z
     .string()
     .min(8, "Senha deve ter pelo menos 8 caracteres")

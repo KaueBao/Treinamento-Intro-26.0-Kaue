@@ -65,11 +65,90 @@ model User {
   sessions      Session[]
   accounts      Account[]
   role          Role      @default(USER)
+  compras       Compra[]
+  carrinho      Carrinho?
   // < e aqui
 
 
 
   @@map("user")
+}
+
+model Carrinho {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  itens CarrinhoItem[]
+}
+
+model CarrinhoItem {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  quantidade Int    @default(1)
+
+  carrinhoId String   @db.ObjectId
+  carrinho   Carrinho @relation(fields: [carrinhoId], references: [id], onDelete: Cascade)
+
+  produtoId String  @db.ObjectId
+  produto   Produto @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+
+  @@unique([carrinhoId, produtoId])
+}
+
+model Compra {
+  id         String         @id @default(auto()) @map("_id") @db.ObjectId
+  precoTotal Float
+  createdAt  DateTime       @default(now())
+
+  userId String
+  user   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  produtos CompraProduto[]
+}
+
+model Produto {
+  id        String             @id @default(auto()) @map("_id") @db.ObjectId
+  nome      String
+  descricao String
+  preco     Float
+
+  categorias ProdutoCategoria[]
+  compras    CompraProduto[]
+  carrinhos  CarrinhoItem[]
+}
+
+model Categoria {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  nome String
+
+  produtos ProdutoCategoria[]
+}
+
+model CompraProduto {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  compraId String @db.ObjectId
+  compra   Compra @relation(fields: [compraId], references: [id], onDelete: Cascade)
+
+  produtoId String  @db.ObjectId
+  produto   Produto @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+
+  @@unique([compraId, produtoId])
+}
+
+model ProdutoCategoria {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  produtoId String  @db.ObjectId
+  produto   Produto @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+
+  categoriaId String    @db.ObjectId
+  categoria   Categoria @relation(fields: [categoriaId], references: [id], onDelete: Cascade)
+
+  @@unique([produtoId, categoriaId])
 }
 
 
