@@ -13,7 +13,7 @@ const allowedRoles: AllowedRoutes = {
 // rota de get all users
 export async function GET(request: NextRequest) {
   try {
-    const forbidden = await blockForbiddenRequests(request, allowedRoles.POST);
+    const forbidden = await blockForbiddenRequests(request, allowedRoles.GET);
     if (forbidden) {
       return forbidden;
     }
