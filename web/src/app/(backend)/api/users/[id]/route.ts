@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { blockForbiddenRequests, getUserFromRequest, returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
 import { AllowedRoutes } from "@/types";
-import { idSchema, patchSchema } from "@/backend/schemas";
+import { idSchema, patchSchema } from "@/schemas";
 import { deleteUser, findUserById, updateUser } from "@/backend/services/users";
 import { toErrorMessage } from "@/utils/api/toErrorMessage";
 
@@ -107,6 +107,11 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     }
 
     const body = await validBody(request);
+
+    if (body instanceof NextResponse) {
+      return body;
+    }
+
     const validationResult = patchSchema.safeParse(body);
 
     if (!validationResult.success) {

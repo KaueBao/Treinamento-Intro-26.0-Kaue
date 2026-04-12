@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { objectIdSchema, patchCompraSchema } from "@/backend/schemas";
+import { objectIdSchema, patchCompraSchema } from "@/schemas";
 import { deleteCompra, getCompraById, updateCompra } from "@/backend/services/compras";
 import { returnInvalidDataErrors, toErrorMessage, validBody, zodErrorHandler } from "@/utils/api";
 

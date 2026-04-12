@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createProdutoSchema } from "@/backend/schemas";
+import { createProdutoSchema } from "@/schemas";
 import { createProduto, getAllProdutos } from "@/backend/services/produtos";
 import { returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
 

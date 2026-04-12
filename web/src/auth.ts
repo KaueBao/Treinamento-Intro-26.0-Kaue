@@ -8,9 +8,14 @@ import { getUserRole } from "@/backend/services/auth";
 import { expo } from "@better-auth/expo";
 // import { sendEmail } from "./lib/email";
 import { ResetPasswordEmail } from "./templates/ResetPasswordEmail";
+
+if (process.env.NODE_ENV === "production" && !process.env.BETTER_AUTH_SECRET) {
+    throw new Error("BETTER_AUTH_SECRET must be set in production");
+}
  
 export const auth = betterAuth({
     baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+    secret: process.env.BETTER_AUTH_SECRET,
     database: prismaAdapter(prisma, {
         provider: "mongodb",
     }),

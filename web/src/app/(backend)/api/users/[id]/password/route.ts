@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { blockForbiddenRequests, returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
+import { blockForbiddenRequests, getUserFromRequest, returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
 import { AllowedRoutes } from "@/types";
-import { idSchema, updatePasswordSchema } from "@/backend/schemas";
+import { idSchema, updatePasswordSchema } from "@/schemas";
 import { auth } from "@/auth";
 import { toErrorMessage } from "@/utils/api/toErrorMessage";
 
@@ -17,6 +17,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       return forbidden;
     }
 
+    const userFromRequest = await getUserFromRequest(request);
+
+    if (userFromRequest instanceof NextResponse) {
+      return userFromRequest;
+    }
+
     const { id } = await params;
 
     const idValidationResult = idSchema.safeParse(id);
@@ -28,8 +34,20 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       )
     }
 
-    const { newPassword, currentPassword } = await validBody(request);
-    const validationResult = updatePasswordSchema.safeParse({ newPassword, currentPassword });
+    if (id !== userFromRequest.id) {
+      return NextResponse.json(
+        toErrorMessage("A senha só pode ser alterada pelo próprio usuário"),
+        { status: 403 }
+      );
+    }
+
+    const body = await validBody(request);
+
+    if (body instanceof NextResponse) {
+      return body;
+    }
+
+    const validationResult = updatePasswordSchema.safeParse(body);
 
     if (!validationResult.success) {
       return returnInvalidDataErrors(validationResult.error);

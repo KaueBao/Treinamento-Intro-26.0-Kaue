@@ -34,10 +34,20 @@ describe('POST /api/users', () => {
     if (!('api' in auth)) {
       auth.api = {};
     }
-    (auth.api.signUpEmail as unknown as Mock) = vi.fn().mockResolvedValue(postUserMock);
+    const signUpEmailMock = vi.fn().mockResolvedValue(postUserMock);
+    (auth.api.signUpEmail as unknown as Mock) = signUpEmailMock;
     
     const response = await POST(createUserRequest());
     expect(response?.status).toBe(201);
+
+    expect(signUpEmailMock).toHaveBeenCalledWith({
+      body: {
+        name: postUserMock.name,
+        email: postUserMock.email,
+        password: postUserMock.password,
+        callbackURL: "/",
+      },
+    });
     
     const data = await response?.json();
     expect(data.user).toBeTruthy();

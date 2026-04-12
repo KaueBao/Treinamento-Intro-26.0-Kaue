@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getMateriaById } from '@/app/(backend)/services/materias'
-import { idSchema } from '@/backend/schemas';
+import { idSchema } from '@/schemas';
 import { zodErrorHandler } from '@/utils/api';
 import { toErrorMessage } from '@/utils/api/toErrorMessage';
 

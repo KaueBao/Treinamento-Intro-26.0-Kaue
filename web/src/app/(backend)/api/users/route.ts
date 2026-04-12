@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { registerSchema } from "@/backend/schemas";
+import { registerSchema } from "@/schemas";
 import { blockForbiddenRequests, returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
 import { findUserByEmail, getAllUsers } from "../../services/users";
 import { AllowedRoutes } from "@/types";
@@ -13,7 +13,7 @@ const allowedRoles: AllowedRoutes = {
 // rota de get all users
 export async function GET(request: NextRequest) {
   try {
-    const forbidden = await blockForbiddenRequests(request, allowedRoles.POST);
+    const forbidden = await blockForbiddenRequests(request, allowedRoles.GET);
     if (forbidden) {
       return forbidden;
     }
@@ -32,6 +32,11 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await validBody(request);
+
+    if (body instanceof NextResponse) {
+      return body;
+    }
+
     const validationResult = registerSchema.safeParse(body);
 
     if (!validationResult.success) {

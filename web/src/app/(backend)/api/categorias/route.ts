@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createCategoriaSchema } from "@/backend/schemas";
+import { createCategoriaSchema } from "@/schemas";
 import { createCategoria, getAllCategorias } from "@/backend/services/categorias";
 import { returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
 

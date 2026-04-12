@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth"; // your betterAuth export
-import { blockForbiddenRequests, validBody } from "@/utils/api";
+import { blockForbiddenRequests, returnInvalidDataErrors, validBody } from "@/utils/api";
 import { AllowedRoutes } from "@/types";
+import { forgotPasswordSchema } from "@/schemas";
 
 const allowedRoles: AllowedRoutes = {
   POST: ['SUPER_ADMIN', 'ADMIN', 'USER'],
@@ -13,7 +14,19 @@ export async function POST(req: NextRequest) {
       return forbidden;
     }
 
-    const { email } = await validBody(req);
+    const body = await validBody(req);
+
+    if (body instanceof NextResponse) {
+      return body;
+    }
+
+    const validationResult = forgotPasswordSchema.safeParse(body);
+
+    if (!validationResult.success) {
+      return returnInvalidDataErrors(validationResult.error);
+    }
+
+    const { email } = validationResult.data;
 
     const redirectTo = `${process.env.BETTER_AUTH_URL}/api/password/reset`;
 

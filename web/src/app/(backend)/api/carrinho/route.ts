@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { addCarrinhoItemSchema, removeCarrinhoItemSchema } from "@/backend/schemas";
+import { addCarrinhoItemSchema, removeCarrinhoItemSchema } from "@/schemas";
 import { addItemToCarrinho, getCarrinhoByUserId, removeItemFromCarrinho } from "@/backend/services/carrinho";
 import { getUserFromRequest, returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
 

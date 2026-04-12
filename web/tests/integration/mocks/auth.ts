@@ -1,6 +1,8 @@
 import { vi } from 'vitest';
 import { Role } from '@/generated/prisma';
 
+const TEST_USER_ID = '11111111-1111-4111-8111-111111111111';
+
 let currentRole: Role | null = null
 let currentUser: any = null
 let currentSession: any = null
@@ -12,13 +14,13 @@ export const setCurrentRole = (role: Role | null) => {
   
   if (role) {
     currentUser = {
-      id: 'test-user-id',
+      id: TEST_USER_ID,
       email: 'test@example.com',
       name: 'Test User'
     }
     currentSession = {
       id: 'test-session-id',
-      userId: 'test-user-id',
+      userId: TEST_USER_ID,
       expiresAt: new Date(Date.now() + 864000),
       token: 'test-token'
     }

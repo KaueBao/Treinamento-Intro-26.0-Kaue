@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { blockForbiddenRequests, returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
 import { AllowedRoutes } from "@/types";
-import { emailSchema, idSchema } from "@/backend/schemas";
+import { changeEmailSchema, idSchema } from "@/schemas";
 import { auth } from "@/auth";
 import { toErrorMessage } from "@/utils/api/toErrorMessage";
 
@@ -28,15 +28,20 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       )
     }
 
-    const { newEmail } = await validBody(request);
-    const validationResult = emailSchema.safeParse(newEmail);
+    const body = await validBody(request);
+
+    if (body instanceof NextResponse) {
+      return body;
+    }
+
+    const validationResult = changeEmailSchema.safeParse(body);
 
     if (!validationResult.success) {
       return returnInvalidDataErrors(validationResult.error);
     }
     
     const user = await auth.api.changeEmail({ body: {
-      newEmail: validationResult.data,
+      newEmail: validationResult.data.newEmail,
     }})
     return NextResponse.json(user);
   } catch (error) {

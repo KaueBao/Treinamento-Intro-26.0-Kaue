@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { checkoutCompraSchema } from "@/backend/schemas";
+import { checkoutCompraSchema } from "@/schemas";
 import { checkoutCompra } from "@/backend/services/compras";
 import { getUserFromRequest, returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
 

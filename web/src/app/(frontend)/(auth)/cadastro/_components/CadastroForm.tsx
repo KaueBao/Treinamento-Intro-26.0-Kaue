@@ -7,7 +7,7 @@ import RequiredTag from "@/components/base/input/RequiredTag";
 import { hasLowercase, hasMinLength, hasNumber, hasUppercase, validatePassword, validateConfirmPassword } from "@/utils";
 
 import { toast } from "react-hot-toast";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
 import dynamic from 'next/dynamic';
@@ -22,6 +22,7 @@ function CadastroForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const router = useRouter();
 
   const handleCredentialsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +56,7 @@ function CadastroForm() {
         toast.success(`Bem-vindo(a), ${name}!`);
         
         setTimeout(() => {
-          redirect('/');
+          router.push('/');
         }, 1000);
       }
     } catch (error: unknown) {

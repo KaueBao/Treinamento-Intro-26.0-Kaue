@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createMateria, getAllMaterias } from '@/app/(backend)/services/materias'
-import { createMateriaSchema } from '@/backend/schemas';
+import { createMateriaSchema } from '@/schemas';
 import { blockForbiddenRequests, returnInvalidDataErrors, validBody, zodErrorHandler } from '@/utils/api';
 import type { AllowedRoutes } from '@/types';
 import { toErrorMessage } from '@/utils/api/toErrorMessage';
@@ -32,6 +32,10 @@ export async function POST (request: NextRequest) {
     }
 
     const body = await validBody(request);
+
+    if (body instanceof NextResponse) {
+      return body;
+    }
 
     const validationResult = createMateriaSchema.safeParse(body)
     

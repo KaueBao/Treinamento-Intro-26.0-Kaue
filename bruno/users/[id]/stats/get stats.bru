@@ -1,0 +1,11 @@
+meta {
+  name: get stats
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/{{folder}}/{{userId}}/stats
+  body: none
+  auth: inherit
+}
