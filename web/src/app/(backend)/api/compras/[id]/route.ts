@@ -3,9 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { objectIdSchema, patchCompraSchema } from "@/schemas";
 import { deleteCompra, getCompraById, updateCompra } from "@/backend/services/compras";
 import { returnInvalidDataErrors, toErrorMessage, validBody, zodErrorHandler } from "@/utils/api";
+import { authMiddleware } from "@/middleware/auth";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const user = await authMiddleware(request);
+    if (user instanceof NextResponse) return user;
+
     const { id } = await params;
 
     const idValidation = objectIdSchema.safeParse(id);
@@ -27,6 +31,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const user = await authMiddleware(request);
+    if (user instanceof NextResponse) return user;
+
     const { id } = await params;
 
     const idValidation = objectIdSchema.safeParse(id);
@@ -55,6 +62,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const user = await authMiddleware(request);
+    if (user instanceof NextResponse) return user;
+
     const { id } = await params;
 
     const idValidation = objectIdSchema.safeParse(id);

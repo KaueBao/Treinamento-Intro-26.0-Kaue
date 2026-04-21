@@ -14,6 +14,14 @@ enum Role {
   SUPER_ADMIN
 }
 
+enum CompraStatus {
+  pending
+  paid
+  shipped
+  delivered
+  cancelled
+}
+
 // modelos de exemplo abaixo (pode deletar)
 model Curso {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
@@ -102,6 +110,7 @@ model Compra {
   id         String         @id @default(auto()) @map("_id") @db.ObjectId
   precoTotal Float
   createdAt  DateTime       @default(now())
+  status     CompraStatus   @default(pending)
 
   userId String
   user   User           @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -1,3 +1,15 @@
+# Run pnpm directly when available, otherwise use corepack as fallback.
+run_pnpm() {
+  if command -v pnpm >/dev/null 2>&1; then
+    pnpm "$@"
+  elif command -v corepack >/dev/null 2>&1; then
+    corepack pnpm "$@"
+  else
+    echo "pnpm not found and corepack is unavailable. Install pnpm or enable corepack." >&2
+    return 127
+  fi
+}
+
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # Verifica se o branch remoto existe. Se não existir, não usa origin/BRANCH no diff.
@@ -10,12 +22,12 @@ fi
 # Check if any changed file is under the web/ folder
 if echo "$CHANGED_FILES" | grep -q "^web/"; then
   echo "Detected changes in /web. Running lint..."
-  pnpm --filter web lint || exit 1
+  run_pnpm --filter web lint || exit 1
 
   if [ "$BRANCH" = "main" ]; then
     echo "You're on branch 'main'. Running web build and tests..."
-    pnpm --filter web test:e2e || exit 1
-    pnpm --filter web build || exit 1
+    run_pnpm --filter web test:e2e || exit 1
+    run_pnpm --filter web build || exit 1
   else
     echo "Not on 'main' branch. Skipping web build/tests."
   fi

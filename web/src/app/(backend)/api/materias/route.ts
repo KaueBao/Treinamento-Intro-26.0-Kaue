@@ -17,7 +17,7 @@ export async function GET() {
   } catch (error) {
     console.error('Erro ao buscar matérias:', error)
     return NextResponse.json(
-      { error: 'Falha ao buscar matérias' },
+      toErrorMessage('Falha ao buscar matérias'),
       { status: 500 }
     )
   }

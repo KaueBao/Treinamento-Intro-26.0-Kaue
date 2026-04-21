@@ -7,12 +7,13 @@ vi.mock("@/backend/services/db", () => ({
     },
     compra: {
       create: vi.fn(),
+      update: vi.fn(),
     },
   },
 }));
 
 import prisma from "@/backend/services/db";
-import { checkoutCompra } from "@/backend/services/compras";
+import { checkoutCompra, updateCompraStatus } from "@/backend/services/compras";
 
 describe("compras service checkoutCompra", () => {
   beforeEach(() => {
@@ -25,6 +26,7 @@ describe("compras service checkoutCompra", () => {
     };
     compra: {
       create: Mock;
+      update: Mock;
     };
   };
 
@@ -106,5 +108,35 @@ describe("compras service checkoutCompra", () => {
     ).rejects.toThrow("Um ou mais produtos nao foram encontrados");
 
     expect(mockedPrisma.compra.create).not.toHaveBeenCalled();
+  });
+
+  it("should update compra status", async () => {
+    const compraId = "507f191e810c19729de860ea";
+    const updatedCompra = {
+      id: compraId,
+      status: "shipped",
+      user: { id: "11111111-1111-1111-1111-111111111111" },
+      produtos: [],
+    };
+
+    mockedPrisma.compra.update.mockResolvedValue(updatedCompra);
+
+    const response = await updateCompraStatus(compraId, "shipped");
+
+    expect(response).toEqual(updatedCompra);
+    expect(mockedPrisma.compra.update).toHaveBeenCalledWith({
+      where: { id: compraId },
+      data: {
+        status: "shipped",
+      },
+      include: {
+        user: true,
+        produtos: {
+          include: {
+            produto: true,
+          },
+        },
+      },
+    });
   });
 });

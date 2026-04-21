@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { resetPasswordSchema } from "@/schemas";
 import { returnInvalidDataErrors, validBody } from "@/utils/api";
+import { toErrorMessage } from "@/utils/api/toErrorMessage";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,6 +26,6 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json(res);
   } catch {
-    return NextResponse.json({ error: "Reset failed" }, { status: 400 });
+    return NextResponse.json(toErrorMessage("Reset failed"), { status: 400 });
   }
 }

@@ -1,10 +1,22 @@
+# Run pnpm directly when available, otherwise use corepack as fallback.
+run_pnpm() {
+  if command -v pnpm >/dev/null 2>&1; then
+    pnpm "$@"
+  elif command -v corepack >/dev/null 2>&1; then
+    corepack pnpm "$@"
+  else
+    echo "pnpm not found and corepack is unavailable. Install pnpm or enable corepack." >&2
+    return 127
+  fi
+}
+
 # Get list of staged files
 CHANGED_FILES=$(git diff --cached --name-only)
 
 # Check if any staged file is under the web/ folder
 if echo "$CHANGED_FILES" | grep -q "^web/"; then
   echo "Detected changes in /web. Running tests..."
-  pnpm --filter web test
+  run_pnpm --filter web test
 else
   echo "No changes in /web. Skipping web lint/test."
 fi

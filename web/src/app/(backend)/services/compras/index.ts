@@ -1,4 +1,5 @@
 import prisma from "@/backend/services/db";
+import type { CompraStatus } from "@/generated/prisma";
 
 type CompraInput = {
   userId: string;
@@ -100,6 +101,23 @@ export async function updateCompra(id: string, data: CompraPatch) {
             ...produtosCreate(data.produtoIds),
           }
         : undefined,
+    },
+    include: {
+      user: true,
+      produtos: {
+        include: {
+          produto: true,
+        },
+      },
+    },
+  });
+}
+
+export async function updateCompraStatus(id: string, status: CompraStatus) {
+  return prisma.compra.update({
+    where: { id },
+    data: {
+      status,
     },
     include: {
       user: true,

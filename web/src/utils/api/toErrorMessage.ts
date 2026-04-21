@@ -1,11 +1,9 @@
 export function toErrorMessage(
   message: string,
-  details?: unknown
+  _details?: unknown
 ) {
   return {
-    error: {
-      message,
-      ...(details ? { details } : {})
-    }
+    success: false,
+    message,
   };
 }

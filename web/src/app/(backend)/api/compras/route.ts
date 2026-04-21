@@ -3,9 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { createCompraSchema } from "@/schemas";
 import { createCompra, getAllCompras } from "@/backend/services/compras";
 import { returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
+import { authMiddleware } from "@/middleware/auth";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const user = await authMiddleware(request);
+    if (user instanceof NextResponse) return user;
+
     const compras = await getAllCompras();
     return NextResponse.json(compras, { status: 200 });
   } catch (error) {
@@ -15,6 +19,9 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await authMiddleware(request);
+    if (user instanceof NextResponse) return user;
+
     const body = await validBody(request);
 
     if (body instanceof NextResponse) {

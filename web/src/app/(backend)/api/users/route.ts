@@ -5,6 +5,7 @@ import { blockForbiddenRequests, returnInvalidDataErrors, validBody, zodErrorHan
 import { findUserByEmail, getAllUsers } from "../../services/users";
 import { AllowedRoutes } from "@/types";
 import { auth } from "@/auth";
+import { toErrorMessage } from "@/utils/api/toErrorMessage";
 
 const allowedRoles: AllowedRoutes = {
   GET: ["SUPER_ADMIN", "ADMIN"]
@@ -51,10 +52,7 @@ export async function POST(request: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-        { 
-          error: "Usuário já existe",
-          field: "email" 
-        },
+        toErrorMessage("Usuário já existe"),
         { status: 409 }
       );
     }    

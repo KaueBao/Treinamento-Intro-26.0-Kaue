@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { checkoutCompraSchema } from "@/schemas";
 import { checkoutCompra } from "@/backend/services/compras";
-import { getUserFromRequest, returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
+import { returnInvalidDataErrors, validBody, zodErrorHandler } from "@/utils/api";
+import { authMiddleware } from "@/middleware/auth";
 
 export async function POST(request: NextRequest) {
   try {
-    const userFromRequest = await getUserFromRequest(request);
+    const userFromRequest = await authMiddleware(request);
 
     if (userFromRequest instanceof NextResponse) {
       return userFromRequest;

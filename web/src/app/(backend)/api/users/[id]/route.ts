@@ -62,7 +62,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     // só permite um usuário de role USER se auto deletar
     if (userFromRequest.role === 'USER' && id !== userFromRequest.id) {
-      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+      return NextResponse.json(toErrorMessage("Acesso negado"), { status: 403 });
     }
 
     const user = await deleteUser(id);
@@ -103,7 +103,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
     // só permite um usuário de role USER se auto atualizar
     if (userFromRequest.role === 'USER' && id !== userFromRequest.id) {
-      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+      return NextResponse.json(toErrorMessage("Acesso negado"), { status: 403 });
     }
 
     const body = await validBody(request);
